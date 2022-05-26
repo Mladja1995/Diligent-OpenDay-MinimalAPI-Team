@@ -10,6 +10,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // End points DI
 builder.Services.AddStudentEndpoints();
+builder.Services.AddBookEndpoints();
+builder.Services.AddClassroomEndpoints();
+
 builder.Services.AddCourseEndpoints();
 // Validation
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -26,6 +29,9 @@ app.UseSwaggerUI(options =>
 
 
 app.UseStudentEndpoints();
+app.UseBookEndpoints();
+app.UseClassroomEndpoints();
+
 app.UseCourseEndpoints();
 
 app.Run();

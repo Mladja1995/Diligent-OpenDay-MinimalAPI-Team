@@ -3,6 +3,7 @@ using System;
 using Diligent.MinimalAPI.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,39 +11,45 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diligent.MinimalAPI.Migrations
 {
     [DbContext(typeof(FacultyContext))]
-    partial class FacultyContextModelSnapshot : ModelSnapshot
+    [Migration("20220526135501_Milica")]
+    partial class Milica
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
 
-            modelBuilder.Entity("Diligent.MinimalAPI.Models.Course", b =>
+            modelBuilder.Entity("Diligent.MinimalAPI.Models.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Code")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsOptional")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("ISBN")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Points")
+                    b.Property<int>("PageCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Semester")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ReleasedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Book");
                 });
 
             modelBuilder.Entity("Diligent.MinimalAPI.Models.Student", b =>

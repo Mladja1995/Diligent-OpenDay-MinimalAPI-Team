@@ -6,6 +6,7 @@ namespace Diligent.MinimalAPI.Database
     public class FacultyContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
+        public DbSet<Professor> Professors { get; set; }
 
 
         public string DbPath { get; }
@@ -30,6 +31,11 @@ namespace Diligent.MinimalAPI.Database
                 b.HasKey(e => e.Id);
                 b.Property(e => e.Id).ValueGeneratedOnAdd();
                 //b.Property(e => e.IndexNum).
+            });
+            modelBuilder.Entity<Professor>(b =>
+            {
+                b.HasKey(e => e.Id);
+                b.Property(e => e.Id).ValueGeneratedOnAdd();
             });
         }
     }

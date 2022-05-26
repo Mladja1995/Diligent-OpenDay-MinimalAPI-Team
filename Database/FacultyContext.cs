@@ -6,7 +6,7 @@ namespace Diligent.MinimalAPI.Database
     public class FacultyContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
-
+        public DbSet<Classroom> Classrooms { get; set; }
 
         public string DbPath { get; }
 
@@ -26,6 +26,14 @@ namespace Diligent.MinimalAPI.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>(b =>
+            {
+                b.HasKey(e => e.Id);
+                b.Property(e => e.Id).ValueGeneratedOnAdd();
+                //b.Property(e => e.IndexNum).
+            });
+
+
+            modelBuilder.Entity<Classroom>(b =>
             {
                 b.HasKey(e => e.Id);
                 b.Property(e => e.Id).ValueGeneratedOnAdd();

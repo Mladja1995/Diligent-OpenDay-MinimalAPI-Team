@@ -7,7 +7,7 @@ namespace Diligent.MinimalAPI.Endpoints
 {
     public static class StudentEndpoints
     {
-        private const string Tag = "Student";
+        private const string Tag = "Students";
         private const string BaseRoute = "students";
 
         // Extentions methods:
@@ -23,20 +23,44 @@ namespace Diligent.MinimalAPI.Endpoints
         public static void UseStudentEndpoints(
             this IEndpointRouteBuilder app)
         {
-            app.MapPost(BaseRoute, CreateStudentAsync)
-                .Produces<bool>(200).Produces<IEnumerable<ValidationFailure>>(400)
-                .WithTags(Tag);
+            app.MapPost(BaseRoute, CreateStudentAsync).WithTags(Tag);
+            app.MapGet($"{BaseRoute}/{{index}}", GetStudentByIndexAsync).WithTags(Tag);
 
         }
 
-        internal static async Task<IResult> CreateStudentAsync(Student student, IStudentService studentService, IValidator<Student> validator)
+        internal static async Task<IResult> CreateStudentAsync(Student student, IStudentService studentService, 
+            IValidator<Student> validator, ILogger<Program> logger)
         {
-            var validationResult = validator.Validate(student);
-            if (!validationResult.IsValid)
+            try
             {
-                return Results.BadRequest(validationResult.Errors);
+                var validationResult = await validator.ValidateAsync(student);
+                if (!validationResult.IsValid)
+                {
+                    return Results.BadRequest(validationResult.Errors);
+                }
+
+                var isCreated = await studentService.CreateAsync(student);
+                return isCreated ? Results.Created($"{BaseRoute}/{student.IndexNum}", student) : Results.BadRequest();
             }
-            return Results.Ok(await studentService.CreateStudentAsync(student));
+            catch (Exception ex)
+            {
+                logger.LogError(ex.InnerException.Message);
+                return Results.StatusCode(500);
+            }
+        }
+
+        internal static async Task<IResult> GetStudentByIndexAsync(int index, IStudentService studentService, ILogger<Program> logger)
+        {
+            try
+            {
+                var student = await studentService.GetByIndexAsync(index);
+                return student != null ? Results.Ok(student) : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.InnerException.Message);
+                return Results.StatusCode(500);
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Diligent.MinimalAPI.Database
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
-            DbPath = Path.Join(path, "faculty.db");
+            DbPath = Path.Join(path, "faculty1.db");
             Console.WriteLine($"Database path: {DbPath}.");
         }
 
@@ -29,6 +29,7 @@ namespace Diligent.MinimalAPI.Database
             {
                 b.HasKey(e => e.Id);
                 b.Property(e => e.Id).ValueGeneratedOnAdd();
+                //b.Property(e => e.IndexNum).
             });
         }
     }
